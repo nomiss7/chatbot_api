@@ -7,11 +7,11 @@ from app.routes import auth, chat, history
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     async with async_engine.begin() as conn:
-        await conn.run_sync(lambda _: None)  # Проверка подключения
+        await conn.run_sync(lambda _: None)
     try:
         yield
     finally:
-        await async_session().close()  # Закрываем соединение при завершении
+        await async_session().close()
 
 
 app = FastAPI(lifespan=lifespan)

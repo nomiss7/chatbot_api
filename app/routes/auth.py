@@ -14,7 +14,6 @@ router = APIRouter()
 
 @router.post("/register/")
 async def register_user(user: UserRegister):
-    """Регистрация пользователя"""
     async with async_session() as session:
         result = await session.execute(select(User).filter(User.email == user.email))
         existing_user = result.scalars().first()
@@ -34,7 +33,6 @@ async def register_user(user: UserRegister):
 
 @router.post("/verify/")
 async def verify_user(user: UserVerify):
-    """Подтверждение кода регистрации"""
     async with async_session() as session:
         result = await session.execute(select(User).filter(User.email == user.email))
         db_user = result.scalars().first()
@@ -52,7 +50,6 @@ async def verify_user(user: UserVerify):
 
 @router.post("/login/")
 async def login_user(user: UserLogin):
-    """Аутентификация пользователя"""
     async with async_session() as session:
         result = await session.execute(select(User).filter(User.email == user.email))
         db_user = result.scalars().first()
@@ -66,12 +63,10 @@ async def login_user(user: UserLogin):
 
 @router.post("/logout/")
 async def logout_user(user_email: str = Depends(get_current_user)):
-    """Выход пользователя"""
     return {"message": "Successfully logged out."}
 
 
 @router.post("/token-refresh/")
 async def refresh_token(token: Token, user_email: str = Depends(get_current_user)):
-    """Обновление JWT токена"""
     new_token = await create_access_token({"sub": user_email}, timedelta(minutes=30))
     return {"token": new_token}

@@ -13,7 +13,6 @@ router = APIRouter()
 
 @router.post("/ask/")
 async def chat_ask(request: ChatRequest, user_email: str = Depends(get_current_user)):
-    """Отправка сообщения в чат"""
     async with async_session() as session:
         conversation_id = request.conversation_id or str(uuid.uuid4())
 

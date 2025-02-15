@@ -10,7 +10,6 @@ router = APIRouter()
 
 @router.get("/conversations/")
 async def list_conversations(user_email: str = Depends(get_current_user)):
-    """Список всех разговоров пользователя"""
     async with async_session() as session:
         result = await session.execute(select(Conversation))
         conversations = result.scalars().all()
@@ -20,7 +19,6 @@ async def list_conversations(user_email: str = Depends(get_current_user)):
 
 @router.get("/conversations/{conversation_id}/")
 async def get_conversation(conversation_id: str, user_email: str = Depends(get_current_user)):
-    """Получение конкретного разговора"""
     async with async_session() as session:
         result = await session.execute(
             select(Conversation).filter(Conversation.conversation_id == conversation_id)

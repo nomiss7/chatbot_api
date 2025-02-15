@@ -21,7 +21,6 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login/")
 
 
 def get_current_user(token: str = Security(oauth2_scheme)):
-    """Получение текущего пользователя из JWT-токена"""
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         user_email = payload.get("sub")
